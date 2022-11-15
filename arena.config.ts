@@ -5,8 +5,18 @@ import { WebSocketTransport } from  "@colyseus/ws-transport";
 import { Hackmon } from './rooms/Hackmon'
 import basicAuth from "express-basic-auth";
 import cors from 'cors'
+import { apiRouter } from './apiRouter';
+import { userRouter } from './rpg/rpgRouter'
+import express from 'express';
+import { verifyToken, createOrFindUser } from './rpg/rpgService'
+
+import config from "./config";
+import { chainRouter } from "./chain/chainRouter";
+
 
 const port = Number(process.env.PORT);
+
+
 
 export default Arena({
   getId: () => "Hackmon",
@@ -34,6 +44,9 @@ export default Arena({
 
   initializeExpress: (app) => {
 
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+
     app.get("/", (req, res) => {
       res.send("ok!");
     });
@@ -42,7 +55,7 @@ export default Arena({
     const basicAuthMiddleware = basicAuth({
       // 用戶名/密碼列表
       users: {
-        "admin": "qop",
+        [config.BASIC_AUTH_KEY]: config.BASIC_AUTH_VALUE,
       },
       // 發送 WWW-Authenticate 響應頭部, 提示用戶
       // 填寫用戶名和密碼
@@ -51,6 +64,13 @@ export default Arena({
     app.use(cors());
 
     app.use("/colyseus", basicAuthMiddleware, monitor());
+
+    app.use("/api/getUser", userRouter)
+    app.use("/api/hackmon/*", verifyToken)
+    app.use("/api", apiRouter)
+    
+    app.use("/chain", chainRouter)
+
 
 
     app.get("/test", (req, res) => {
