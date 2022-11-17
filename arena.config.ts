@@ -1,6 +1,6 @@
 import Arena from "@colyseus/arena";
 import { monitor } from "@colyseus/monitor";
-import { uWebSocketsTransport } from "@colyseus/uwebsockets-transport";
+// import { uWebSocketsTransport } from "@colyseus/uwebsockets-transport";
 import { WebSocketTransport } from  "@colyseus/ws-transport";
 import { Hackmon } from './rooms/Hackmon'
 import basicAuth from "express-basic-auth";

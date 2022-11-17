@@ -18,6 +18,7 @@ export async function getCanMintAmount({
 }: {
   address: string;
 }) {
+  console.log(address,'address')
 
   const message = {
     canMint: 2

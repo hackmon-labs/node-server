@@ -12,34 +12,92 @@ export interface RequestMessage {
   networkType: string;
 }
 
-const DOMAIN = 'hackmon.xyz';
-const STATEMENT = 'Please sign this message to confirm your identity.';
-const URI = 'https://hackmon.xyz';
-const EXPIRATION_TIME = '2023-01-01T00:00:00.000Z';
-const TIMEOUT = 15;
-
-export async function attackFn({
-  address,
-  damage,
-  uuid,
-  to
-}: {
-  address: string;
-  damage: number;
-  uuid: string;
-  to: string;
-}) {
-  console.log(damage, to)
-
-
-
-  const message = {
-    ok: true
-  }
-
-  return message;
+const calcDamage = (max, min) => {
+  return Math.ceil(Math.random() * (max - min)) + min
 }
 
+export async function attackFn({
+  id,
+}: {
+  id: string;
+}) {
+
+  const { data: user } = await supabase.from('hackers').select('*').eq('id', id).single();
+
+
+  const newMonsterHp = user.monster.monsterHp - calcDamage(user.maxDamage, user.minDamage)
+
+  const newHackmanHp = user.metadata.hp - calcDamage(user.monster.monsterMaxDamage, user.monster.monsterMinDamage)
+
+
+
+  const message = await supabase
+    .from('hackers')
+    .update({
+      id,
+      metadata: {
+        ...user.metadata,
+        hp: newMonsterHp > 0 ? newHackmanHp : user.metadata.hp,
+      },
+      monster: {
+        ...user.monster,
+        monsterHp: newHackmanHp > 0 ? newMonsterHp : user.monster.monsterHp,
+      }
+    })
+    .single();
+  // }
+
+
+
+
+
+  return message.data;
+}
+
+
+export async function attackStartFn({
+  id,
+}: {
+  id: string;
+}) {
+
+  const message = await supabase
+    .from('hackers')
+    .update({
+      id,
+      monster: {
+        monsterHp: 50,
+        monsterMaxHp: 50,
+        monsterMaxDamage: 20,
+        monsterMinDamage: 10,
+      }
+    })
+    .single();
+
+  return message.data;
+}
+
+export async function recoverFn({
+  id,
+}: {
+  id: string;
+}) {
+  const { data: user } = await supabase.from('hackers').select('*').eq('id', id).single();
+
+
+  const message = await supabase
+    .from('hackers')
+    .update({
+      id,
+      metadata: {
+        ...user.metadata,
+        hp: user.maxHp,
+      }
+    })
+    .single();
+
+  return message.data;
+}
 
 
 export interface CreateUser {
@@ -60,10 +118,14 @@ export async function createOrFindUser({ address, signature, message }: CreateUs
       .insert({
         address,
         metadata: {
-          hP:100,
-          mp:100,
-          gold:0
-        }
+          hp: 100,
+          mp: 100,
+
+        },
+        maxDamage: 20,
+        minDamage: 10,
+        gold: 0,
+        box: 2
       })
       .single();
     user = response.data;
@@ -84,7 +146,10 @@ export async function createOrFindUser({ address, signature, message }: CreateUs
 }
 
 export async function verifyToken(req: Request, res: Response, next: NextFunction) {
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization?.split(" ")?.[1];
+  if (!token) {
+    return res.json({ code: "404", msg: "token err" });
+  }
   jwt.verify(token, config.SUPABASE_JWT, function (err, decoded) {
     if (err) {
       console.log("verify error", err);
