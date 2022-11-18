@@ -40,7 +40,7 @@ export class Hackmon extends Room<HackmonState> {
     // when a player is ready to connect, call the PlayerReadyToConnectCommand
     this.onMessage(Message.READY_TO_CONNECT, (client) => {
       const player = this.state.players.get(client.sessionId)
-      if (player) player.readyToConnect = true
+      // if (player) player.readyToConnect = true
     })
 
     
