@@ -1,4 +1,4 @@
-import { attackFn, createOrFindUser, attackStartFn, recoverFn } from './rpgService';
+import { attackFn, createUser, attackStartFn, recoverFn, findUser } from './rpgService';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
@@ -54,13 +54,29 @@ export async function create(req: Request, res: Response, next: NextFunction) {
   try {
     const { address, message, signature } = req.body;
 
-    const user = await createOrFindUser({
+    const user = await createUser({
       address,
       message,
       signature,
     });
 
     res.status(200).json({ user });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function find(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { address, } = req.body;
+
+    const data = await findUser({
+      address,
+      // message,
+      // signature,
+    });
+
+    res.status(200).json(data);
   } catch (err) {
     next(err);
   }

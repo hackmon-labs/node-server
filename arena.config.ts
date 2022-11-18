@@ -8,10 +8,13 @@ import cors from 'cors'
 import { apiRouter } from './apiRouter';
 import { userRouter } from './rpg/rpgRouter'
 import express from 'express';
-import { verifyToken, createOrFindUser } from './rpg/rpgService'
+import { verifyToken, createUser } from './rpg/rpgService'
 
 import config from "./config";
 import { chainRouter } from "./chain/chainRouter";
+import cron from 'node-schedule'
+
+import { generateRoot } from './job/job';
 
 
 const port = Number(process.env.PORT);
@@ -75,6 +78,17 @@ export default Arena({
 
     app.get("/test", (req, res) => {
       res.send("if you can see it,this is working");
+    });
+
+
+    //job
+    let rule = new cron.RecurrenceRule();
+    rule.hour = 4;
+    rule.minute = 0;
+    cron.scheduleJob(rule, function () {
+      console.log(new Date(), 'Every 4 hours');
+      const root = generateRoot()
+      console.log(root)
     });
 
   },

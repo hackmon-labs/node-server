@@ -1,10 +1,12 @@
 import Moralis from 'moralis';
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
 import config from '../config';
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
+import {ethers} from 'ethers'
+import supabase from '../supbase/index'
 
-const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY);
+// const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY);
 
 export interface RequestMessage {
   address: string;
@@ -42,7 +44,9 @@ export async function attackFn({
       monster: {
         ...user.monster,
         monsterHp: newHackmanHp > 0 ? newMonsterHp : user.monster.monsterHp,
-      }
+      },
+      updateTime: new Date()
+
     })
     .single();
   // }
@@ -70,7 +74,9 @@ export async function attackStartFn({
         monsterMaxHp: 50,
         monsterMaxDamage: 20,
         monsterMinDamage: 10,
-      }
+      },
+      updateTime: new Date()
+
     })
     .single();
 
@@ -92,7 +98,9 @@ export async function recoverFn({
       metadata: {
         ...user.metadata,
         hp: user.maxHp,
-      }
+      },
+      updateTime: new Date()
+
     })
     .single();
 
@@ -106,7 +114,40 @@ export interface CreateUser {
   message: string;
 }
 
-export async function createOrFindUser({ address, signature, message }: CreateUser) {
+const verifyMessage = async ({ message, address, signature }: CreateUser) => {
+  const recoveredAddress =await ethers.utils.verifyMessage(message, signature);
+
+  return recoveredAddress === address;
+};
+
+export async function findUser({ address }: {address:string}) {
+  let { data: user } = await supabase.from('hackers').select('*').eq('address', address).single();
+
+  if(!user?.authData){
+    return {
+      ok: false,
+      message: 'need signature'
+    }
+  }
+
+  return {
+    ok:true,
+    message:'ok',
+    user
+  }
+}
+
+export async function createUser({ address, signature, message }: CreateUser) {
+
+  const hasVerifyMessage = await verifyMessage({ address, signature, message })
+
+  if (!hasVerifyMessage){
+    return {
+      token:'',
+      user:{},
+      err:'signature error!'
+    }
+  }
 
 
   let { data: user } = await supabase.from('hackers').select('*').eq('address', address).single();
@@ -120,16 +161,20 @@ export async function createOrFindUser({ address, signature, message }: CreateUs
         metadata: {
           hp: 100,
           mp: 100,
-
+        },
+        authData:{
+          signature, message
         },
         maxDamage: 20,
         minDamage: 10,
         gold: 0,
-        box: 2
+        box: 2,
+        updateTime:new Date()
       })
       .single();
     user = response.data;
   }
+ 
 
 
   const token = jwt.sign(
