@@ -7,7 +7,7 @@ import config from '../config';
 
 export async function getCanMint(req: Request, res: Response, next: NextFunction) {
   try {
-    const  address  = req.query;
+    const address = req._parsedUrl.query;
     const message = await getCanMintAmount(
       address,
      

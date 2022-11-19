@@ -1,4 +1,4 @@
-import { attackFn, createUser, attackStartFn, recoverFn, findUser } from './rpgService';
+import { attackFn, createUser, attackStartFn, recoverFn, findUser, getNFTsFn, updateItemFn } from './rpgService';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
@@ -73,6 +73,41 @@ export async function find(req: Request, res: Response, next: NextFunction) {
     const data = await findUser({
       address,
       // message,
+      // signature,
+    });
+
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getNFTs(req: Request, res: Response, next: NextFunction) {
+  try {
+    // const { address, } = req.body;
+    const { address } = await getId(req)
+
+    const data = await getNFTsFn({
+      address,
+      // message,
+      // signature,
+    });
+
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function updateItem(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { tokens} = req.body;
+    const { id } = await getId(req)
+
+    const data = await updateItemFn({
+      id,
+      tokens
+      // message,tokens
       // signature,
     });
 

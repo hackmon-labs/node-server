@@ -13,7 +13,7 @@ import { verifyToken, createUser } from './rpg/rpgService'
 import config from "./config";
 import { chainRouter } from "./chain/chainRouter";
 import cron from 'node-schedule'
-
+import Moralis from 'moralis'
 import { generateRoot } from './job/job';
 
 
@@ -46,6 +46,11 @@ export default Arena({
   },
 
   initializeExpress: (app) => {
+
+     Moralis.start({
+       apiKey: config.MORALIS_API_KEY,
+      // ...and any other configuration
+    });
 
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());

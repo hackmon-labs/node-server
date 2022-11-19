@@ -4,21 +4,27 @@ import { NextFunction, Request, Response } from 'express';
 
 
 import supabase from '../supbase/index'
+import { ethers } from 'ethers';
 
 export interface RequestMessage {
   address: string;
 
 }
 
-
+export function transLegalAddress(address) {
+  const account = ethers.utils.getAddress(address);
+  return account;
+}
 
 export async function getCanMintAmount(
   address
 ) {
   console.log(address, 'address')
+  console.log(transLegalAddress(address))
+  const addressRight = transLegalAddress(address)
+  let { data: user } = await supabase.from('hackers').select('*').eq('address', addressRight).single();
 
-  let { data: user } = await supabase.from('hackers').select('*').eq('address', address).single();
-
+  console.log(user,'user')
   if (!user) {
     return {
       canMint: 0
