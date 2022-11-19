@@ -1,5 +1,4 @@
 import Moralis from 'moralis';
-import { EvmChain } from "@moralisweb3/evm-utils";
 // import { createClient } from '@supabase/supabase-js';
 import config from '../config';
 import jwt from 'jsonwebtoken';
@@ -111,7 +110,7 @@ export async function attackFn({
   let newGold=0
   let newBox=0
   let win=''
-  const newMonsterHp = user.monster.monsterHp - calcDamage(user.maxDamage, user.minDamage)
+  const newMonsterHp = user.monster.monsterHp - calcDamage(user.maxDamage, user.minDamage)-(user.addMaxAtk)
 
   const newHackmanHp = user.metadata.hp - calcDamage(user.monster.monsterMaxDamage, user.monster.monsterMinDamage)
 
