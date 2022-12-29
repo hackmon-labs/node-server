@@ -1,4 +1,4 @@
-import { attackFn, createUser, attackStartFn, recoverFn, findUser, getNFTsFn, updateItemFn } from './rpgService';
+import { attackFn, createUser, attackStartFn, recoverFn, findUser, getNFTsFn, updateItemFn, buyBloodFn, getOpenAiText } from './rpgService';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
@@ -8,6 +8,25 @@ import config from '../config';
   var decoded = jwt.verify(token, config.SUPABASE_JWT);
   //  console.log(decoded,'decoded')
   return decoded
+}
+
+// openAi
+
+
+export async function npcTalk(req: Request, res: Response, next: NextFunction) {
+  try {
+
+    const { text, talkUuid } = req.body;
+    const { address } = await getId(req)
+
+    const message = await getOpenAiText({
+      text, talkUuid, address
+    });
+
+    res.status(200).json({ message });
+  } catch (err) {
+    next(err);
+  }
 }
 
 export async function attack(req: Request, res: Response, next: NextFunction) {
@@ -29,6 +48,23 @@ export async function attackStart(req: Request, res: Response, next: NextFunctio
     // console.log(uuid, address,req)
     const message = await attackStartFn({
       id,
+    });
+
+    res.status(200).json({ message });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function buyBlood(req: Request, res: Response, next: NextFunction) {
+  try {
+    // const { tokens } = req.body;
+    const { id } = await getId(req)
+
+    const message = await buyBloodFn({
+      id,
+      // message,tokens
+      // signature,
     });
 
     res.status(200).json({ message });
@@ -116,5 +152,6 @@ export async function updateItem(req: Request, res: Response, next: NextFunction
     next(err);
   }
 }
+
 
 

@@ -28,6 +28,7 @@ specifiers:
   minimist: '>=1.2.2'
   moralis: ^2.7.2
   node-schedule: ^2.1.0
+  openai: ^3.1.0
   phaser: ^3.55.2
   regenerator-runtime: ^0.13.7
   rimraf: ^2.7.1
@@ -66,6 +67,7 @@ dependencies:
   minimist: registry.npmmirror.com/minimist/1.2.7
   moralis: registry.npmmirror.com/moralis/2.7.2
   node-schedule: registry.npmmirror.com/node-schedule/2.1.0
+  openai: registry.npmmirror.com/openai/3.1.0
   phaser: registry.npmmirror.com/phaser/3.55.2
   regenerator-runtime: registry.npmmirror.com/regenerator-runtime/0.13.10
   rimraf: registry.npmmirror.com/rimraf/2.7.1
@@ -3874,6 +3876,17 @@ packages:
     version: 1.4.0
     dependencies:
       wrappy: registry.npmmirror.com/wrappy/1.0.2
+    dev: false
+
+  registry.npmmirror.com/openai/3.1.0:
+    resolution: {integrity: sha512-v5kKFH5o+8ld+t0arudj833Mgm3GcgBnbyN9946bj6u7bvel4Yg6YFz2A4HLIYDzmMjIo0s6vSG9x73kOwvdCg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/openai/-/openai-3.1.0.tgz}
+    name: openai
+    version: 3.1.0
+    dependencies:
+      axios: registry.npmmirror.com/axios/0.26.1
+      form-data: registry.npmmirror.com/form-data/4.0.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   registry.npmmirror.com/optional-require/1.0.3:

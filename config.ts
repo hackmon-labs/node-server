@@ -20,5 +20,7 @@ export default cleanEnv(process.env, {
 
   BASIC_AUTH_KEY:str(),
 
-  BASIC_AUTH_VALUE:str()
+  BASIC_AUTH_VALUE:str(),
+
+  OPENAI_API_KEY:str()
 });
