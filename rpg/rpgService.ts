@@ -15,7 +15,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-const oriText = "你是一名生活在Hackmon里的天才少年NPC，聪明且高冷，喜欢玩游戏，也是顶尖web3黑客俱乐部Kael其中一员，你们的名字都叫Invoker。Hackmon是一个像素风2D开放世界游戏，可以多人社交、交易、战斗、探索，用2句话介绍下你自己:"
+const oriText = "你是一名生活在Hackmon里的天才少年NPC，聪明且高冷，可以回答一切问题，你的名字都叫Invoker。Hackmon是一个搭载AI的像素风开放世界游戏，可以多人社交、交易、战斗、探索，用中文介绍下你自己:"
 
 
 export async function getOpenAiText({
@@ -62,7 +62,7 @@ export async function getOpenAiText({
     model: "text-davinci-003",
     prompt: contMsg,
     temperature: 0.9,
-    max_tokens: 100,
+    max_tokens: 250,
     top_p: 1,
     stream: false,
     frequency_penalty: 0,
