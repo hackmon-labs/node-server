@@ -15,8 +15,16 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-const oriText = "你是一名生活在Hackmon里的天才少年NPC，聪明且高冷，可以回答一切问题，你的名字都叫Invoker。Hackmon是一个搭载AI的像素风开放世界游戏，可以多人社交、交易、战斗、探索，用中文介绍下你自己:"
 
+
+
+const oriText = "你是一名生活在Hackmon里的天才少年NPC，聪明且高冷，可以回答一切问题，你的名字都叫Invoker。Hackmon是一个搭载AI的像素风开放世界游戏，可以多人社交、交易、战斗、探索，用中文介绍下你自己:"
+const oriMsg = [
+  {
+    "role": "system",
+    "content": oriText
+  }
+]
 
 export async function getOpenAiText({
   text,
@@ -32,7 +40,7 @@ export async function getOpenAiText({
   const talk_uuid = talkUuid
 
   let { data: msg } = await supabase.from('npcTalk2').select('*').eq('talk_uuid', talk_uuid).single();
-  let contMsg = '';
+  let contMsg = [];
   let responseText ='';
   console.log('----')
 
@@ -46,49 +54,60 @@ export async function getOpenAiText({
       .insert({
         talk_uuid,
         address,
-        cont: `${oriText}\n\n${text}`,
+        cont: JSON.stringify(oriMsg),
         update_at: new Date()
       })
       .single();
-    contMsg = response.data.cont;
+    contMsg = JSON.parse(response.data.cont) ;
   } else {
-    
-    contMsg = `${msg.cont}\n\n${text}`
+    const lastMsg = JSON.parse(msg?.cont)
+    lastMsg.push({
+      "role": "user",
+      "content": text
+    })
+    contMsg = lastMsg
   }
 
   console.log(contMsg)
 
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: contMsg,
+  const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages:contMsg,
+    // prompt: contMsg,
     temperature: 0.9,
-    max_tokens: 250,
+    // max_tokens: 250,
     top_p: 1,
-    stream: false,
-    frequency_penalty: 0,
-    presence_penalty: 2,
-    stop: "/n",
+    // stream: false,
+    // frequency_penalty: 0,
+    // presence_penalty: 2,
+    // stop: "/n",
   });
 
-  
 
-   responseText =await response.data.choices[0].text
-  console.log(responseText, 'responseText');
+  const resAllMessage = await response.data.choices
+  const aiMsg: { content } = resAllMessage[0].message 
+  // console.log(response.data, 'response.data', JSON.stringify(aiMsg))
 
-  const lastMsg = await `${contMsg}\n\n${responseText}`
-  console.log(lastMsg, 'lastMsg');
 
-  const aa=await supabase
+  responseText = aiMsg?.content
+  console.log(responseText, 'responseText', );
+
+  // const lastMsg = await JSON.stringify(resAllMessage)
+  // console.log(lastMsg, 'lastMsg');
+
+  contMsg.push(aiMsg as never)
+
+  const saveTalk=await supabase
     .from('npcTalk2')
     .update({
       // talk_uuid,
-      cont: lastMsg ,
+      cont: JSON.stringify(contMsg),
       update_at: new Date()
     })
     .eq('talk_uuid', talk_uuid)
     .single();
 
-  console.log(aa)
+  // console.log(saveTalk)
 
   return responseText;
 }
@@ -114,10 +133,9 @@ export async function getNFTsFn({
 }: {
   address: string;
 }) {
-  console.log(address)
 
   const settings = {
-    apiKey: 'rRqZllyk7wfMAjruk4EP2qcP8j7-QtV_', // Replace with your Alchemy API Key.
+    apiKey: config.Alchemy_API_KEY, // Replace with your Alchemy API Key.
     network: Network.MATIC_MUMBAI, // Replace with your network.
 
   };

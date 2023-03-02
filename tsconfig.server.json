@@ -11,6 +11,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
   },
-  "include": ["."],
-  "exclude": ["node_modules/**"]
+  // "include": [".",".env","package.json","producticon.env"],
+  "exclude": ["node_modules/**"],
+  // "files":[
+  //   ".env", "package.json", "producticon.env"
+  // ]
 }

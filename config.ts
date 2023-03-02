@@ -22,5 +22,7 @@ export default cleanEnv(process.env, {
 
   BASIC_AUTH_VALUE:str(),
 
-  OPENAI_API_KEY:str()
+  OPENAI_API_KEY:str(),
+
+  Alchemy_API_KEY:str()
 });

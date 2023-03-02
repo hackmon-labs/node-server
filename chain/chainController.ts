@@ -1,13 +1,18 @@
 import { getCanMintAmount, getRootFn } from './chainService';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request , Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 
+interface RequestWithParsedUrl extends Request {
+  _parsedUrl?: {
+    pathname: string;
+    query: string;
+  };
+}
 
-
-export async function getCanMint(req: Request, res: Response, next: NextFunction) {
+export async function getCanMint(req: RequestWithParsedUrl, res: Response, next: NextFunction) {
   try {
-    const address = req?._parsedUrl.query;
+    const address = req._parsedUrl?.query;
     const message = await getCanMintAmount(
       address,
      

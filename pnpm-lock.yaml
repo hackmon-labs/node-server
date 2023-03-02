@@ -11,7 +11,7 @@ specifiers:
   '@moralisweb3/common-evm-utils': ^2.11.1
   '@supabase/supabase-js': ^1.35.4
   '@types/cors': ^2.8.6
-  '@types/express': ^4.17.1
+  '@types/express': ^4.17.17
   '@typescript-eslint/eslint-plugin': ^4.33.0
   '@typescript-eslint/parser': ^4.33.0
   alchemy-sdk: ^2.2.3
@@ -30,7 +30,7 @@ specifiers:
   minimist: '>=1.2.2'
   moralis: ^2.14.1
   node-schedule: ^2.1.0
-  openai: ^3.1.0
+  openai: ^3.2.1
   phaser: ^3.55.2
   regenerator-runtime: ^0.13.7
   rimraf: ^2.7.1
@@ -52,7 +52,7 @@ dependencies:
   '@moralisweb3/common-evm-utils': registry.npmmirror.com/@moralisweb3/common-evm-utils/2.11.1
   '@supabase/supabase-js': registry.npmmirror.com/@supabase/supabase-js/1.35.7
   '@types/cors': registry.npmmirror.com/@types/cors/2.8.12
-  '@types/express': registry.npmmirror.com/@types/express/4.17.14
+  '@types/express': registry.npmmirror.com/@types/express/4.17.17
   '@typescript-eslint/eslint-plugin': registry.npmmirror.com/@typescript-eslint/eslint-plugin/4.33.0_b437dje45jwsli5vlhomcei76i
   '@typescript-eslint/parser': registry.npmmirror.com/@typescript-eslint/parser/4.33.0_77fvizpdb3y4icyeo2mf4eo7em
   alchemy-sdk: registry.npmmirror.com/alchemy-sdk/2.2.3
@@ -71,7 +71,7 @@ dependencies:
   minimist: registry.npmmirror.com/minimist/1.2.7
   moralis: registry.npmmirror.com/moralis/2.14.1
   node-schedule: registry.npmmirror.com/node-schedule/2.1.0
-  openai: registry.npmmirror.com/openai/3.1.0
+  openai: registry.npmmirror.com/openai/3.2.1
   phaser: registry.npmmirror.com/phaser/3.55.2
   regenerator-runtime: registry.npmmirror.com/regenerator-runtime/0.13.10
   rimraf: registry.npmmirror.com/rimraf/2.7.1
@@ -1028,23 +1028,23 @@ packages:
     version: 2.8.12
     dev: false
 
-  registry.npmmirror.com/@types/express-serve-static-core/4.17.31:
-    resolution: {integrity: sha512-DxMhY+NAsTwMMFHBTtJFNp5qiHKJ7TeqOo23zVEM9alT1Ml27Q3xcTH0xwxn7Q0BbMcVEJOs/7aQtUWupUQN3Q==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.31.tgz}
+  registry.npmmirror.com/@types/express-serve-static-core/4.17.33:
+    resolution: {integrity: sha512-TPBqmR/HRYI3eC2E5hmiivIzv+bidAfXofM+sbonAGvyDhySGw9/PQZFt2BLOrjUUR++4eJVpx6KnLQK1Fk9tA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.33.tgz}
     name: '@types/express-serve-static-core'
-    version: 4.17.31
+    version: 4.17.33
     dependencies:
       '@types/node': registry.npmmirror.com/@types/node/18.11.9
       '@types/qs': registry.npmmirror.com/@types/qs/6.9.7
       '@types/range-parser': registry.npmmirror.com/@types/range-parser/1.2.4
     dev: false
 
-  registry.npmmirror.com/@types/express/4.17.14:
-    resolution: {integrity: sha512-TEbt+vaPFQ+xpxFLFssxUDXj5cWCxZJjIcB7Yg0k0GMHGtgtQgpvx/MUQUeAkNbA9AAGrwkAsoeItdTgS7FMyg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/express/-/express-4.17.14.tgz}
+  registry.npmmirror.com/@types/express/4.17.17:
+    resolution: {integrity: sha512-Q4FmmuLGBG58btUnfS1c1r/NQdlp3DMfGDGig8WhfpA2YRUtEkxAjkZb0yvplJGYdF1fsQ81iMDcH24sSCNC/Q==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/express/-/express-4.17.17.tgz}
     name: '@types/express'
-    version: 4.17.14
+    version: 4.17.17
     dependencies:
       '@types/body-parser': registry.npmmirror.com/@types/body-parser/1.19.2
-      '@types/express-serve-static-core': registry.npmmirror.com/@types/express-serve-static-core/4.17.31
+      '@types/express-serve-static-core': registry.npmmirror.com/@types/express-serve-static-core/4.17.33
       '@types/qs': registry.npmmirror.com/@types/qs/6.9.7
       '@types/serve-static': registry.npmmirror.com/@types/serve-static/1.15.0
     dev: false
@@ -3748,10 +3748,10 @@ packages:
       wrappy: registry.npmmirror.com/wrappy/1.0.2
     dev: false
 
-  registry.npmmirror.com/openai/3.1.0:
-    resolution: {integrity: sha512-v5kKFH5o+8ld+t0arudj833Mgm3GcgBnbyN9946bj6u7bvel4Yg6YFz2A4HLIYDzmMjIo0s6vSG9x73kOwvdCg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/openai/-/openai-3.1.0.tgz}
+  registry.npmmirror.com/openai/3.2.1:
+    resolution: {integrity: sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/openai/-/openai-3.2.1.tgz}
     name: openai
-    version: 3.1.0
+    version: 3.2.1
     dependencies:
       axios: registry.npmmirror.com/axios/0.26.1
       form-data: registry.npmmirror.com/form-data/4.0.0
