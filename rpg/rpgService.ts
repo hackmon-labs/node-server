@@ -187,7 +187,7 @@ export async function updateItemFn({
   const message = await supabase
     .from('hackers')
     .update({
-      id,
+      // id,
       // maxHp:
       addMaxHp,
       addMaxAtk,
@@ -196,6 +196,7 @@ export async function updateItemFn({
       updateTime: new Date()
 
     })
+    .eq('id',id)
     .single();
 
   console.log(message, 'message')
@@ -231,7 +232,7 @@ export async function attackFn({
   const message = await supabase
     .from('hackers')
     .update({
-      id,
+      // id,
       metadata: {
         ...user.metadata,
         hp: newMonsterHp > 0 ? newHackmanHp : user.metadata.hp,
@@ -245,6 +246,7 @@ export async function attackFn({
       updateTime: new Date()
 
     })
+    .eq('id',id)
     .single();
   // }
 
@@ -265,7 +267,7 @@ export async function attackStartFn({
   const message = await supabase
     .from('hackers')
     .update({
-      id,
+      // id,
       monster: {
         monsterHp: 50,
         monsterMaxHp: 50,
@@ -275,7 +277,10 @@ export async function attackStartFn({
       updateTime: new Date()
 
     })
+    .eq('id',id)
     .single();
+
+  console.log(message,'message',id)
 
   return message.data;
 }
@@ -300,12 +305,13 @@ export async function buyBloodFn({
   const message = await supabase
     .from('hackers')
     .update({
-      id,
+      // id,
       gold: newGold,
       blood: newBlood,
       updateTime: new Date()
 
     })
+    .eq('id',id)
     .single();
 
   return message.data;
@@ -322,7 +328,7 @@ export async function recoverFn({
     const message = await supabase
       .from('hackers')
       .update({
-        id,
+        // id,
         metadata: {
           ...user.metadata,
           hp: user.maxHp + user.addMaxHp,
@@ -331,6 +337,7 @@ export async function recoverFn({
         updateTime: new Date()
 
       })
+      .eq('id',id)
       .single();
     return message.data;
 
